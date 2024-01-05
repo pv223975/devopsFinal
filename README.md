@@ -10,3 +10,7 @@ pip3 install -r requirements.txt
 ## Run Flaskr
 
 python3 -m flask -A project/app.py run --host=0.0.0.0    # This runs on port 5000 by default, use --port=#### to specify another port
+
+## Run Tests
+
+python3 -m pytest
