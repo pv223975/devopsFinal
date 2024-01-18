@@ -6,6 +6,7 @@ Flaskr -- a mini-blog-like-app -- is the app that you build for the official Fla
 
 Be sure you have pip3 installed already (sudo apt install python3-pip)
 pip3 install -r requirements.txt
+python3 create_db.py # create the sqlite3 database
 
 ## Run Flaskr
 
