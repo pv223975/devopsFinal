@@ -63,6 +63,29 @@ def test_login_logout(client):
     rv = login(client, app.config["USERNAME"], app.config["PASSWORD"] + "x")
     assert b"Invalid password" in rv.data
 
+def test_testuser(client):
+    """Test login and logout using helper functions"""
+    rv = login(client, "testuser", app.config["PASSWORD"])
+    assert b"Invalid username" in rv.data
+    rv = login(client, app.config["USERNAME"] , "password")
+    assert b"Invalid password" in rv.data
+    rv = login(client, "testuser" , "password")
+    assert b"Invalid password" in rv.data
+
+def test_wrongpass(client):
+    """Test login with incorrect password"""
+    rv = login(client, "testuser" , "wrongpassword")
+    assert b"Invalid password" in rv.data
+
+def test_wrongpass_admin(client):
+    """Test login with incorrect password"""
+    rv = login(client, app.config["USERNAME"] , "wrongpassword")
+    assert b"Invalid password" in rv.data
+
+def test_access_without_login(client):
+    """Try to access without login"""
+    response = client.post("/add")
+    assert response.status_code == 401
 
 def test_messages(client):
     """Ensure that user can post messages"""
