@@ -14,7 +14,7 @@ class Post(db.Model):
         return f"<title {self.title}>"
 
 class User(db.Model):
-    id = db.Column(Db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     uName = db.Column(db.String, nullable=False)
     pWord = db.Column(db.String, nullable=False)
 
