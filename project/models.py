@@ -12,3 +12,15 @@ class Post(db.Model):
 
     def __repr__(self):
         return f"<title {self.title}>"
+
+class User(db.Model):
+    id = db.Column(Db.Integer, primary_key=True)
+    uName = db.Column(db.String, nullable=False)
+    pWord = db.Column(db.String, nullable=False)
+
+    def __init__(self, uName, pWord):
+        self.uName = uName
+        self.pWord = pWord
+
+    def __repr__(self):
+        return f"<title {self.uName}>"
