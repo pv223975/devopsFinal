@@ -18,8 +18,10 @@
 
       {% if not session.logged_in %}
       <a class="btn btn-success" role="button" href="{{ url_for('login') }}"
-        >log in</a
-      >
+        >Log In</a>
+      <a class="btn btn-success" role="button" href="{{ url_for('create_user') }}">
+        Create User</a>
+  
       {% else %}
       <a class="btn btn-warning" role="button" href="{{ url_for('logout') }}"
         >log out</a

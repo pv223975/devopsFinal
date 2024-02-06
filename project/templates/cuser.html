@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Flaskr-TDD | Create</title>
+    <title>Flaskr-TDD | Login</title>
     <link
       rel="stylesheet"
       type="text/css"
@@ -11,7 +11,7 @@
   <body>
     <div class="container">
       <br /><br />
-      <h1>Flaskr</h1>
+      <h1>Big Social App</h1>
       <br /><br />
 
       {% for message in get_flashed_messages() %}
@@ -20,7 +20,7 @@
       </div>
       {% endfor %}
 
-      <h3>Login</h3>
+      <h3>Create User</h3>
 
       {% if error %}
       <p class="alert alert-danger col-sm-4" role="danger">
@@ -48,8 +48,9 @@
           </dd>
           <br /><br />
           <dd>
-            <input type="submit" class="btn btn-primary" value="create" />
+            <input type="submit" class="btn btn-primary" value="Create" />
           </dd>
+          <span>Password must be at least 10 characters long!</span>
         </dl>
       </form>
     </div>
