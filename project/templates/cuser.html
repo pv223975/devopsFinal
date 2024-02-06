@@ -28,7 +28,11 @@
       </p>
       {% endif %}
 
-      <form action="{{ url_for('login') }}" method="post" class="form-group">
+      <form 
+      action="{{ url_for('add_user') }}"
+      method="post"
+      class="add-user form-group"
+      >
         <dl>
           <dt>Username:</dt>
           <dd>
