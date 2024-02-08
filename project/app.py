@@ -77,16 +77,19 @@ def login():
     """User login/authentication/session management."""
     error = None
     if request.method == "POST":
-        if db.session.query(models.User).filter(models.User.uName == request.form["username"]).all() != request.form["username"]:
-            error = "Invalid username"
-            print(db.session.query(models.User).filter(models.User.uName == request.form["username"]).all())
+        username = request.form["username"]
+        password = request.form["password"]
 
-        elif db.session.query(models.User).filter(models.User.pWord == request.form["password"]).all() != request.form["password"]:
-            error = "Invalid password"
+        # Check if the user with the provided username and password exists
+        user = db.session.query(models.User).filter_by(uName=username, pWord=password).first()
+
+        if user is None:
+            error = "Invalid username or password"
         else:
             session["logged_in"] = True
             flash("You were logged in")
             return redirect(url_for("index"))
+
     return render_template("login.html", error=error)
 
 # @app.route("/login", methods=["GET", "POST"])
