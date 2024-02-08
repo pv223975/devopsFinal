@@ -71,36 +71,32 @@ def add_entry():
     flash("New entry was successfully posted")
     return redirect(url_for("index"))
 
-
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    """User login/authentication/session management."""
-    error = None
-    if request.method == "POST":
-        if request.form["username"] != app.config["USERNAME"]:
-            error = "Invalid username"
-        elif request.form["password"] != app.config["PASSWORD"]:
-            error = "Invalid password"
-        else:
-            session["logged_in"] = True
-            flash("You were logged in")
-            return redirect(url_for("index"))
-    return render_template("login.html", error=error)
-
 @app.route("/create_user", methods=["GET", "POST"])
 def create_user():
     """Adds new user"""
     error = None
     return render_template("cuser.html", error=error)
 
-@app.route("/create_button", methods=["POST"])
-def add_user():
-    new_entry = models.User(request.form["uName"], request.form["pWord"])
-    db.session.add(new_entry)
-    db.session.commit()
-    flash("New user created")
-    return redirect(url_for("login"))
 
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    """User login/authentication/session management."""
+    error = None
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        # Check if the user with the provided username and password exists
+        user = db.session.query(models.User).filter_by(uName=username, pWord=password).first()
+
+        if user is None:
+            error = "Invalid username or password"
+        else:
+            session["logged_in"] = True
+            flash("You were logged in")
+            return redirect(url_for("index"))
+
+    return render_template("login.html", error=error)
 
 @app.route("/logout")
 def logout():
@@ -109,6 +105,14 @@ def logout():
     flash("You were logged out")
     return redirect(url_for("index"))
 
+@app.route("/cuser", methods=["POST"])
+def cuser():
+    """add new user to database"""
+    new_entry = models.User(request.form["username"], request.form["password"])
+    db.session.add(new_entry)
+    db.session.commit()
+    flash("New user created successfully")
+    return redirect(url_for("index"))
 
 @app.route("/delete/<int:post_id>", methods=["GET"])
 @login_required
