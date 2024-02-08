@@ -71,6 +71,12 @@ def add_entry():
     flash("New entry was successfully posted")
     return redirect(url_for("index"))
 
+@app.route("/create_user", methods=["GET", "POST"])
+def create_user():
+    """Adds new user"""
+    error = None
+    return render_template("cuser.html", error=error)
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -91,38 +97,6 @@ def login():
             return redirect(url_for("index"))
 
     return render_template("login.html", error=error)
-
-# @app.route("/login", methods=["GET", "POST"])
-# def login():
-#     """User login/authentication/session management."""
-#     error = None
-#     if request.method == "POST": #need to check db for user/pass, not reference hardcoded creds
-#         username = request.args.get('username')
-#         password = request.args.get('password')
-#         users = User.query.all()
-#         '''
-#         if username == db.session.query(models.User).filter_by(uName=username) and password == db.session.query(models.User).filter_by(pWord=password):
-#         '''
-#         if username is not None and password is not None:    
-#             test = db.session.query(text("select * from User where uName=%s"))
-#             session["logged_in"] = True
-#             flash("You were logged in")
-#             flash(test)
-#             return redirect(url_for("index"))
-#         else:
-#             error = "Invalid password or username"
-#         """
-#         if request.form["username"] != app.config["USERNAME"]:
-#             error = "Invalid username"
-#         elif request.form["password"] != app.config["PASSWORD"]:
-#             error = "Invalid password"
-#         else:
-#             session["logged_in"] = True
-#             flash("You were logged in")
-#             return redirect(url_for("index"))
-#             """
-#     return render_template("login.html", error=error)
-
 
 @app.route("/logout")
 def logout():

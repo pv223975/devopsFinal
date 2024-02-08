@@ -29,7 +29,7 @@
       {% endif %}
 
       <form 
-      action="{{ url_for('add_user') }}"
+      action="{{ url_for('cuser') }}"
       method="post"
       class="add-user form-group"
       >
@@ -53,6 +53,8 @@
           <br /><br />
           <dd>
             <input type="submit" class="btn btn-primary" value="Create" />
+            <a class="btn btn-success" role="button" href="{{ url_for('index') }}">
+              Back</a>
           </dd>
           <span>Password must be at least 10 characters long!</span>
         </dl>
