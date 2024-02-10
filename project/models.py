@@ -15,7 +15,7 @@ class Post(db.Model):
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    uName = db.Column(db.String, nullable=False)
+    uName = db.Column(db.String, nullable=False, unique=True)
     pWord = db.Column(db.String, nullable=False)
 
     def __init__(self, uName, pWord):

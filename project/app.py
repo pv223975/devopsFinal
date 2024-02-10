@@ -40,40 +40,11 @@ db = SQLAlchemy(app)
 from project import models
 
 
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if not session.get("logged_in"):
-            flash("Please log in.")
-            return jsonify({"status": 0, "message": "Please log in."}), 401
-        return f(*args, **kwargs)
-
-    return decorated_function
-
-
 @app.route("/")
 def index():
     """Searches the database for entries, then displays them."""
     entries = db.session.query(models.Post)
     return render_template("index.html", entries=entries)
-
-
-@app.route("/add", methods=["POST"])
-def add_entry():
-    """Adds new post to the database."""
-    if not session.get("logged_in"):
-        abort(401)
-    new_entry = models.Post(request.form["title"], request.form["text"])
-    db.session.add(new_entry)
-    db.session.commit()
-    flash("New entry was successfully posted")
-    return redirect(url_for("index"))
-
-@app.route("/create_user", methods=["GET", "POST"])
-def create_user():
-    """Adds new user"""
-    error = None
-    return render_template("cuser.html", error=error)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -91,26 +62,66 @@ def login():
             error = "Invalid username or password"
         else:
             session["logged_in"] = True
-            flash( username + "  logged in")
+            flash("Logged in: " + username)
             return redirect(url_for("index"))
 
     return render_template("login.html", error=error)
+
 
 @app.route("/logout")
 def logout():
     """User logout/authentication/session management."""
     session.pop("logged_in", None)
     flash("You were logged out")
-    return redirect(url_for("index"))
+    return redirect(url_for("login"))
+
+
+@app.route("/create_user", methods=["GET", "POST"])
+def create_user():
+    """Adds new user"""
+    error = None
+    return render_template("cuser.html", error=error)
+
 
 @app.route("/cuser", methods=["POST"])
 def cuser():
-    """add new user to database"""
-    new_entry = models.User(request.form["username"], request.form["password"])
+    username = request.form["username"]
+    # Check if the user with the provided username and password exists
+    user = db.session.query(models.User).filter_by(uName=username).first()
+    if user is not None:
+        error = "Invalid username or password"
+        """add new user to database"""
+    else:
+        new_entry = models.User(request.form["username"], request.form["password"])
+        db.session.add(new_entry)
+        db.session.commit()
+        flash("New user created successfully")
+
+    return redirect(url_for("login"))
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get("logged_in"):
+            flash("Please log in.")
+            return jsonify({"status": 0, "message": "Please log in."}), 401
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+
+@app.route("/add", methods=["POST"])
+def add_entry():
+    """Adds new post to the database."""
+    if not session.get("logged_in"):
+        abort(401)
+    new_entry = models.Post(request.form["title"], request.form["text"])
     db.session.add(new_entry)
     db.session.commit()
-    flash("New user created successfully")
+    flash("New entry was successfully posted")
     return redirect(url_for("index"))
+
 
 @app.route("/delete/<int:post_id>", methods=["GET"])
 @login_required
