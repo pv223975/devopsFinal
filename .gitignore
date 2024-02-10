@@ -4,4 +4,3 @@ env
 __pycache__
 *.db
 venv/
-project/flaskr.db
