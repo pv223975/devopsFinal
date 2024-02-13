@@ -14,6 +14,7 @@ from flask import (
     jsonify,
 )
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import IntegrityError
 
 
 basedir = Path(__file__).resolve().parent
@@ -85,19 +86,19 @@ def create_user():
 
 @app.route("/cuser", methods=["POST"])
 def cuser():
-    username = request.form["username"]
-    # Check if the user with the provided username and password exists
-    user = db.session.query(models.User).filter_by(uName=username).first()
-    if user is not None:
-        error = "Invalid username or password"
-        """add new user to database"""
-    else:
+
+    try:
         new_entry = models.User(request.form["username"], request.form["password"])
         db.session.add(new_entry)
         db.session.commit()
         flash("New user created successfully")
+        db.session.commit()
+        return redirect(url_for("login"))
 
-    return redirect(url_for("login"))
+    except IntegrityError:
+        db.session.rollback()
+        error = "This username already exists!"
+        return redirect(url_for("create_user", error=error))
 
 
 def login_required(f):
