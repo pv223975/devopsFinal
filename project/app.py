@@ -47,6 +47,11 @@ def index():
     entries = db.session.query(models.Post)
     return render_template("index.html", entries=entries)
 
+@app.route("/post")
+def post_page():
+    """Searches the database for entries, then displays them."""
+    entries = db.session.query(models.Post)
+    return render_template("post.html", entries=entries)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
