@@ -98,6 +98,7 @@ def cuser():
     except IntegrityError:
         db.session.rollback()
         error = "This username already exists!"
+        flash(error)
         return redirect(url_for("create_user", error=error))
 
 
