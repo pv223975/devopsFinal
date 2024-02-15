@@ -47,11 +47,37 @@ def index():
     entries = db.session.query(models.Post)
     return render_template("index.html", entries=entries)
 
+from flask import request, abort
+
+@app.route("/comment")
+def comment_page():
+    entry_id = request.args.get('entry_id', type=int)
+
+    # Check if the entry_id is None or not found
+    if entry_id is None:
+        abort(404)  # Entry_id not found, you can customize the error handling
+
+    # Retrieve the entry with the given entry_id from the database
+    entry = db.session.query(models.Post).filter_by(id=entry_id).first()
+
+    # Check if the entry exists
+    if entry is None:
+        abort(404)  # Entry not found, you can customize the error handling
+
+    # Access the associated comments using the relationship defined in your models
+    comments = entry.comments
+
+    return render_template("comment.html", entry=entry, comments=comments)
+
+
 @app.route("/post")
 def post_page():
-    """Searches the database for entries, then displays them."""
+    """Searches the database for entries, th.schen displays them."""
     entries = db.session.query(models.Post)
-    return render_template("post.html", entries=entries)
+    comments = db.session.query(models.Comment)
+    username = session.get('username')
+    return render_template("post.html", entries=entries, username=username, comments=comments)
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -67,6 +93,7 @@ def login():
         if user is None:
             error = "Invalid username or password"
         else:
+            session['username'] = username
             session["logged_in"] = True
             flash("Logged in: " + username)
             return redirect(url_for("index"))
@@ -118,7 +145,7 @@ def login_required(f):
     return decorated_function
 
 
-@app.route("/add", methods=["POST"])
+@app.route("/add_post", methods=["POST"])
 def add_entry():
     """Adds new post to the database."""
     if not session.get("logged_in"):
@@ -129,21 +156,34 @@ def add_entry():
     flash("New entry was successfully posted")
     return redirect(url_for("index"))
 
+@app.route("/add_comment", methods=["POST"])
+def add_comment():
+    """Adds new post to the database."""
+    if not session.get("logged_in"):
+        abort(401)
+    new_comment = models.Comment(request.form["text"], request.form["post_id"], request.form["username"])
+    db.session.add(new_comment)
+    db.session.commit()
+    flash("New entry was successfully posted")
+    return redirect(url_for("post_page"))
 
-@app.route("/delete/<int:post_id>", methods=["GET"])
-@login_required
-def delete_entry(post_id):
-    """Deletes post from database."""
-    result = {"status": 0, "message": "Error"}
-    try:
-        new_id = post_id
-        db.session.query(models.Post).filter_by(id=new_id).delete()
-        db.session.commit()
-        result = {"status": 1, "message": "Post Deleted"}
-        flash("The entry was deleted.")
-    except Exception as e:
-        result = {"status": 0, "message": repr(e)}
-    return jsonify(result)
+
+
+# @app.route("/delete/<int:post_id>", methods=["GET"])
+# @login_required
+# def delete_entry(post_id):
+#     """Deletes post from database."""
+#     result = {"status": 0, "message": "Error"}
+#     try:
+#         new_id = post_id
+#         db.session.query(models.Post).filter_by(id=new_id).delete()
+#         db.session.commit()
+#         result = {"status": 1, "message": "Post Deleted"}
+#         flash("The entry was deleted.")
+#     except Exception as e:
+#         result = {"status": 0, "message": repr(e)}
+#     return jsonify(result)
+
 
 
 @app.route("/search/", methods=["GET"])

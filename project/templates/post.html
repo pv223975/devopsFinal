@@ -20,12 +20,32 @@
 
       <ul class="entries">
         {% for entry in entries %}
-        <li class="entry">
-          <h2 id="{{ entry.id }}">{{ entry.title }}</h2>
-          {{ entry.text|safe }}
-        </li>
-        {% else %}
-        <li><em>No entries yet. Add some!</em></li>
+          <li class="entry">
+            <h2 id="{{ entry.id }}">{{ entry.title }}</h2>
+            {{ entry.text|safe }}
+            <br /><br />
+            <ul class="comments">
+                {% for comment in comments %}
+                  <li class="comment">
+                      <h2 id="{{ comment.id }}">{{ comment.text }}</h2>
+                  </li>
+                {% endfor %}
+              </ul>
+            <button class="btn btn-info toggleCommentForm" data-target="commentFormContainer{{ entry.id }}" role="button">Add Comment</button>
+  
+            <!-- Comment form container initially hidden -->
+            <div id="commentFormContainer{{ entry.id }}" class="commentFormContainer" style="display:none;">
+                <form action="{{ url_for('add_comment') }}" method="post">
+                    <input type="text" id="post_id" name="post_id" value="{{ entry.id }}" readonly style="display:none;">
+                    <input type="text" id="comment_name" name="username" value="{{ session['username'] }}" readonly>   
+                    <label for="comment_text">Your Comment:</label>
+                    <textarea id="comment_text" name="text" required></textarea>
+    
+                    <button type="submit">Submit Comment</button>
+                </form>
+                
+            </div>
+          </li>
         {% endfor %}
       </ul>
     </div>
@@ -33,5 +53,15 @@
       type="text/javascript"
       src="{{url_for('static', filename='main.js') }}"
     ></script>
+    <script>
+        var toggleCommentButtons = document.querySelectorAll('.toggleCommentForm');
+        toggleCommentButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var targetId = this.getAttribute('data-target');
+                var commentFormContainer = document.getElementById(targetId);
+                commentFormContainer.style.display = (commentFormContainer.style.display === 'none' || commentFormContainer.style.display === '') ? 'block' : 'none';
+            });
+        });
+    </script>
   </body>
 </html>
