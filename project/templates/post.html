@@ -26,9 +26,12 @@
             <br /><br />
             <ul class="comments">
                 {% for comment in comments %}
-                  <li class="comment">
-                      <h2 id="{{ comment.id }}">{{ comment.text }}</h2>
-                  </li>
+                    {% if comment.post_id == entry.id %}
+                    <li class="comment">
+                        <h2 id="{{ comment.id }}">{{ comment.username }}</h2>
+                        <span id="{{ comment.id }}">{{ comment.text }}</span>
+                    </li>
+                    {% endif %}
                 {% endfor %}
               </ul>
             <button class="btn btn-info toggleCommentForm" data-target="commentFormContainer{{ entry.id }}" role="button">Add Comment</button>
