@@ -21,9 +21,10 @@
         >Log In</a>
   
       {% else %}
+      <a class="btn btn-info" role="button" href="{{ url_for('viewimages') }}"
+        >Images</a>
       <a class="btn btn-warning" role="button" href="{{ url_for('logout') }}"
-        >log out</a
-      >
+        >Log out</a>
       {% endif %}
 
       <br /><br />
@@ -62,6 +63,11 @@
             <input type="submit" class="btn btn-primary" value="Share" />
           </dd>
         </dl>
+      </form>
+      <h4>Post an image</h4>
+      <form method="POST" enctype="multipart/form-data" action="{{ url_for('upload_file') }}">
+        <input type="file" name="photo">
+        <button type="submit" class="btn btn-primary">Submit</button>
       </form>
       {% endif %}
 

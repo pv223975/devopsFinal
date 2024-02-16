@@ -4,3 +4,7 @@ env
 __pycache__
 *.db
 venv/
+
+#trying to keep the directory but not upload the contents
+images/*
+!images/.gitkeep

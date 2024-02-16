@@ -12,9 +12,10 @@ from flask import (
     url_for,
     abort,
     jsonify,
+    send_from_directory
 )
+from flask_uploads import IMAGES, UploadSet, configure_uploads
 from flask_sqlalchemy import SQLAlchemy
-
 
 basedir = Path(__file__).resolve().parent
 
@@ -32,13 +33,20 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # create and initialize a new Flask app
 app = Flask(__name__)
+
+#app = Flask(__name__, static_folder="static")
+        #dont know if this was actually helpful for my attempts
 # load the config
 app.config.from_object(__name__)
 # init sqlalchemy
 db = SQLAlchemy(app)
 
-from project import models
+#image post stuff
+photos = UploadSet("photos", IMAGES)
+app.config["UPLOADED_PHOTOS_DEST"] = os.path.join(app.root_path, "static/images")
+configure_uploads(app, photos)
 
+from project import models
 
 @app.route("/")
 def index():
@@ -122,6 +130,19 @@ def add_entry():
     flash("New entry was successfully posted")
     return redirect(url_for("index"))
 
+@app.route("/viewimages", methods=["POST", "GET"])
+def viewimages(): 
+    directory = os.listdir('static/images')
+    files = ['images/'+ file for file in directory]
+    return render_template("viewimages.html", files=files)
+
+
+@app.post("/add_image")
+def upload_file():
+    if request.method == "POST" and "photo" in request.files:
+        photos.save(request.files["photo"])
+        flash("Photo saved successfully.")
+        return redirect(url_for("viewimages"))
 
 @app.route("/delete/<int:post_id>", methods=["GET"])
 @login_required
