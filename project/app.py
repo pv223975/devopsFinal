@@ -83,31 +83,36 @@ def profile():
     if not session.get("logged_in"):
         abort(401)
 
+    error = None
+
     userName = session.get('username')
     user = db.session.query(models.User).filter_by(uName=userName).first()
 
-    return render_template("profile.html", user=user)
+    return render_template("profile.html", user=user, error = error)
 
 @app.route("/add_friend", methods=["POST"])
 def add_friend():
     if not session.get("logged_in"):
         abort(401)
 
+    error = None
+    
     userName = session.get('username')
     friend_username = request.form.get("fName")
 
     user = db.session.query(models.User).filter_by(uName=userName).first()
     friend = db.session.query(models.User).filter_by(uName=friend_username).first()
     
-    if friend:
+    try:
         # Add the friend to the current user's friends list
         user.friends.append(friend)
         db.session.commit()
-        flash(f"You added {friend.uName} as a friend.")
-    else:
-        flash(f"Friend not found. Please check the username.")
+        flash(f"Successfully added {friend.uName}")
+    except:
+        error = " not found. Please check the username."
+        flash(f"{friend_username} {error}")
 
-    return redirect(url_for("profile", user=userName))
+    return redirect(url_for("profile", user=userName, error = error))
     
 @app.route("/login", methods=["GET", "POST"])
 def login():
