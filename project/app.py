@@ -78,7 +78,47 @@ def post_page():
     username = session.get('username')
     return render_template("post.html", entries=entries, username=username, comments=comments)
 
+@app.route("/profile", methods=["GET", "POST"])
+def profile():
+    if not session.get("logged_in"):
+        abort(401)
 
+    userName = session.get('username')
+    user = db.session.query(models.User).filter_by(uName=userName).first()
+    #uFriends = db.session.query(models.User.friends).filter_by(uName=userName).first()
+    #uFriends = user.friends
+    #print(uFriends)
+    return render_template("profile.html", user=user)
+
+@app.route("/add_friend", methods=["POST"])
+def add_friend():
+    # Check if the user is logged in
+    if not session.get("logged_in"):
+        abort(401)
+
+    # Get the current user's id from the session
+    userName = session.get('username')
+
+    # Get the friend's username from the form
+    friend_username = request.form.get("fName")
+
+    # Query the User table to find the current user and the friend
+    user = db.session.query(models.User).filter_by(uName=userName).first()
+    friend = db.session.query(models.User).filter_by(uName=friend_username).first()
+    
+    if friend:
+        # Add the friend to the current user's friends list
+        user.friends.append(friend)
+        db.session.commit()
+        # Flash a success message
+        flash(f"You added {friend.uName} as a friend.")
+    else:
+        # Flash an error message
+        flash(f"Friend not found. Please check the username.")
+
+    # Redirect to the profile page
+    return redirect(url_for("profile", user=userName))
+    
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """User login/authentication/session management."""

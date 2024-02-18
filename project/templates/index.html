@@ -19,12 +19,13 @@
       {% if not session.logged_in %}
       <a class="btn btn-success" role="button" href="{{ url_for('login') }}"
         >Log In</a>
-  
       {% else %}
+      <a class="btn btn-success" role="button" href="{{ url_for('post_page') }}"
+        >Posts</a>
+      <a class="btn btn-success" role="button" href="{{ url_for('profile') }}"
+        >Profile</a>
       <a class="btn btn-warning" role="button" href="{{ url_for('logout') }}"
-        >log out</a>
-      <a class="btn btn-success" role="button" href="{{ url_for('post_page') }}">
-        Posts</a>
+        >Log Out</a>
       {% endif %}
 
       <br /><br />
