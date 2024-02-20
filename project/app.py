@@ -12,10 +12,11 @@ from flask import (
     url_for,
     abort,
     jsonify,
+    send_from_directory
 )
+from flask_uploads import IMAGES, UploadSet, configure_uploads
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
-
 
 basedir = Path(__file__).resolve().parent
 
@@ -33,13 +34,18 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # create and initialize a new Flask app
 app = Flask(__name__)
+
 # load the config
 app.config.from_object(__name__)
 # init sqlalchemy
 db = SQLAlchemy(app)
 
-from project import models
+#image post stuff
+photos = UploadSet("photos", IMAGES)
+app.config["UPLOADED_PHOTOS_DEST"] = os.path.join(app.root_path, "static/images")
+configure_uploads(app, photos)
 
+from project import models
 
 @app.route("/")
 def index():
@@ -218,6 +224,22 @@ def add_comment():
 #     except Exception as e:
 #         result = {"status": 0, "message": repr(e)}
 #     return jsonify(result)
+@app.route("/viewimages", methods=["POST", "GET"])
+def viewimages(): 
+    files = os.listdir(os.path.join(app.static_folder, "images"))
+    return render_template("viewimages.html", files=files)
+    #still need to display these better and add user info, ability to delete
+    #but they do display now
+    #also figure out why gifs don't load
+    #"file type not allowed" error too
+
+
+@app.post("/add_image")
+def upload_file():
+    if request.method == "POST" and "photo" in request.files:
+        photos.save(request.files["photo"])
+        flash("Photo saved successfully.")
+        return redirect(url_for("viewimages"))
 
 
 
