@@ -1,38 +1,51 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Flaskr-TDD | Login</title>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-    />
-  </head>
-  <body>
-    <br /><br />
-    <h1>Add Comment</h1>
-    <br /><br />
-    <form
-     action="{{ url_for('add_comment', entry_id=entry_id) }}"
-     method="post"
-     class="add-entry form-group"
-     >
-     <input type="hidden" name="entry_id" value="{{ entry_id }}" />
-     <dl>
-      <dt>Text:</dt>
-      <dd>
-      <textarea
-        name="text"
-        rows="5"
-        cols="40"
-        class="form-control col-sm-4"
-         ></textarea>
-       </dd>
-      <br /><br />
-      <dd>
-       <input type="submit" class="btn btn-primary" value="Comment" />
-      </dd>
-     </dl>
-    </form>
-  </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flaskr-TDD | Add Comment</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        h1 {
+            color: #007bff;
+            text-align: center;
+        }
+        .form-group {
+            margin-top: 20px;
+        }
+        textarea {
+            resize: none;
+        }
+        input[type="submit"] {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h1>Add Comment</h1>
+            <form action="{{ url_for('add_comment', entry_id=entry_id) }}" method="post" class="add-entry form-group">
+                <input type="hidden" name="entry_id" value="{{ entry_id }}" />
+                <div class="mb-3">
+                    <label for="commentText" class="form-label">Text:</label>
+                    <textarea name="text" rows="5" class="form-control" id="commentText" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <input type="submit" class="btn btn-primary" value="Add Comment" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
 </html>
