@@ -39,12 +39,11 @@
     
     </div>
     <!---Still trying to get images to display-->
-
+    
     {% for file in files %}
-    <img src="static/{{file}}">
-    <img src="{{url_for('static', filename='file')}}">
-    <img src="static/images/{{file}}">
-    <img src="{{file}}">
+      {% if file != ".gitkeep" %}
+      <img src="static/images/{{file}}">
+      {% endif %}
     {% endfor %}
 
     <!---end image display attempts/suffering-->

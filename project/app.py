@@ -130,12 +130,25 @@ def add_entry():
     flash("New entry was successfully posted")
     return redirect(url_for("index"))
 
+#@app.route("/viewimages", methods=["POST", "GET"])
+#def viewimages(): 
+#    directory = os.listdir('static/images')
+#    files = ['images/'+ file for file in directory]
+#    return render_template("viewimages.html", files=files)
+
+#@app.route("/viewimages", methods=["GET","POST"])
+#def viewimages(): 
+#    files = []
+#    for filename in os.listdir('static/images'):
+#        if filename != "fake.jpg":
+#            files.append(os.path.join('static/images', filename))
+#        else:
+#            continue 
+#    return render_template("viewimages.html", files=files)
 @app.route("/viewimages", methods=["POST", "GET"])
 def viewimages(): 
-    directory = os.listdir('static/images')
-    files = ['images/'+ file for file in directory]
+    files = os.listdir(os.path.join(app.static_folder, "images"))
     return render_template("viewimages.html", files=files)
-
 
 @app.post("/add_image")
 def upload_file():
