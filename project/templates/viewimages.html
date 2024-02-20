@@ -42,7 +42,7 @@
     
     {% for file in files %}
       {% if file != ".gitkeep" %}
-      <img src="static/images/{{file}}">
+      <img src="static/images/{{file}}" style="max-width: 300px;">
       {% endif %}
     {% endfor %}
 
