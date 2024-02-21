@@ -18,12 +18,16 @@
 
       {% if not session.logged_in %}
       <a class="btn btn-success" role="button" href="{{ url_for('login') }}"
-        >log in</a
-      >
+        >Log In</a>
       {% else %}
+      <a class="btn btn-success" role="button" href="{{ url_for('post_page') }}"
+        >Posts</a>
+      <a class="btn btn-success" role="button" href="{{ url_for('profile') }}"
+        >Profile</a>
+      <a class="btn btn-info" role="button" href="{{ url_for('viewimages') }}"
+        >Images</a>
       <a class="btn btn-warning" role="button" href="{{ url_for('logout') }}"
-        >log out</a
-      >
+        >Log out</a>
       {% endif %}
 
       <br /><br />
@@ -65,22 +69,4 @@
       </form>
       {% endif %}
 
-      <br />
-
-      <ul class="entries">
-        {% for entry in entries %}
-        <li class="entry">
-          <h2 id="{{ entry.id }}">{{ entry.title }}</h2>
-          {{ entry.text|safe }}
-        </li>
-        {% else %}
-        <li><em>No entries yet. Add some!</em></li>
-        {% endfor %}
-      </ul>
-    </div>
-    <script
-      type="text/javascript"
-      src="{{url_for('static', filename='main.js') }}"
-    ></script>
-  </body>
 </html>
