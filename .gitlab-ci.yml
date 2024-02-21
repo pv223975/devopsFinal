@@ -16,6 +16,6 @@ test:
 deploy:
   stage: deploy
   script:
-    - git checkout main  # Assuming your GitHub repo is on the 'master' branch
-    - git pull origin main  # Pull updates from GitHub
+    - git checkout main
+    - git pull origin main
     - echo "Deploying to production"
