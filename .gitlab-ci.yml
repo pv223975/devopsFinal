@@ -1,6 +1,7 @@
 stages:
-  - build
-  - test
+#  - build
+#  - test
+  - example_job
   - deploy
 
 build:
