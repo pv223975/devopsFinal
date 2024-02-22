@@ -15,5 +15,6 @@ deploy:
   stage: deploy
   script:
     - echo "test"
+    - cd connectnow
     - git checkout main
     - git pull 
