@@ -14,7 +14,4 @@ example_job:
 deploy:
   stage: deploy
   script:
-    - cd project
-    - git checkout main
-    - git pull origin main
-    - echo "Deploying to production"
+    - echo "test"
