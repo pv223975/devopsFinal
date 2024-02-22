@@ -1,18 +1,6 @@
 stages:
-#  - build
-#  - test
   - example_job
   - deploy
-
-build:
-  stage: build
-  script:
-#    - echo "Building your project here"
-#    - apt-get update -y
-#    - apt-get upgrade -y
-    - apt-get install python3-pip -y
-    - pip3 install -r requirements.txt
-    - python3 create_db.py
 
 example_job:
   stage: "deploy"
@@ -22,12 +10,6 @@ example_job:
     - chmod 400 SSH_KEY_FILE
   script:
     - ssh -i SSH_KEY_FILE -o StrictHostKeyChecking=no app@10.8.156.76 "cd connectnow&&killall python3;python3 -m flask --app project/app.py run --host=0.0.0.0 >> log.txt 2>>error.txt &"
-
-test:
-  stage: test
-  script:
-    - echo "Running tests"
-    - python3 -m pytest
 
 deploy:
   stage: deploy
