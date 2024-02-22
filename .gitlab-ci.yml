@@ -13,12 +13,11 @@ build:
     - pip3 install -r requirements.txt
     - python3 create_db.py
 
-
-
 test:
   stage: test
   script:
     - echo "Running tests"
+    - python3 -m pytest
 
 deploy:
   stage: deploy
