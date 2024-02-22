@@ -2,6 +2,13 @@ stages:
   - example_job
   - deploy
 
+build:
+  stage: build
+  script:
+    - sudo apt-get install git -y
+
+
+
 example_job:
   stage: "deploy"
   image: "jenkins/ssh-slave"
