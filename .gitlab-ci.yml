@@ -26,6 +26,7 @@ test:
   stage: test
   script:
     - echo "Running tests"
+    - python3 -m pytest
 
 deploy:
   stage: deploy
