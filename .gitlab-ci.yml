@@ -15,3 +15,5 @@ deploy:
   stage: deploy
   script:
     - echo "test"
+    - git checkout main
+    - git pull 
