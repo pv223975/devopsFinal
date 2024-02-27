@@ -13,4 +13,4 @@ test-flaskr:
   script:
     - python3 -m pytest
   after_script:
-    -- rm -rf $tempdir
+    - rm -rf $tempdir
