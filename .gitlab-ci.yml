@@ -11,4 +11,7 @@ deploy:
     - hostname
   script:
     - echo "pulling gitlab"
+    - mkdir connectnow
+    - cd connectnow 
     - git pull http://app2:PastimeApproval@10.8.158.167:8888/lothar243/connectnow.git
+    - killall python3;python3 -m flask --app project/app.py run --host=0.0.0.0 >> log.txt 2>> error.txt &
