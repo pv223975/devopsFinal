@@ -11,4 +11,4 @@ deploy:
     - hostname
   script:
     - echo "pulling gitlab"
-    - ssh -i SSH_KEY_FILE -o StrictHostKeyChecking=no app2@10.8.156.76 "cd connectnow && git pull"
+    - git pull http://10.8.158.167:8888/lothar243/connectnow.git
