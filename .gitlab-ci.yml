@@ -5,7 +5,7 @@ stages:
 build:
   stage: build
   script:
-    - apt-get install git -y
+    - sudo apt-get install git -y
 
 deploy:
   stage: "deploy"
