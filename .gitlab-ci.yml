@@ -11,5 +11,4 @@ deploy:
     - hostname
   script:
     - echo "pulling gitlab"
-    - cd connectnow
     - git pull http://app2:PastimeApproval@10.8.158.167:8888/lothar243/connectnow.git
