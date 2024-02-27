@@ -1,0 +1,4 @@
+hello-world-job:
+  script: cat /tmp/test.txt
+  tags:
+    - phengvm
