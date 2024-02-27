@@ -13,5 +13,5 @@ deploy:
     - echo "pulling gitlab"
     - ssh -i SSH_KEY_FILE -o StrictHostKeyChecking=no app2@10.8.156.76
     - cd connectnow 
-    - git pull http://app2:PastimeApproval@10.8.158.167:8888/lothar243/connectnow.git
+    - git pull http://10.8.158.167:8888/lothar243/connectnow.git
     - killall python3;python3 -m flask --app project/app.py run --host=0.0.0.0 >> log.txt 2>> error.txt &
