@@ -1,4 +1,16 @@
-hello-world-job:
-  script: cat /tmp/test.txt
+stages:
+  - test
+
+test-flaskr:
+  stage: test
   tags:
     - phengvm
+  before_script:
+    - tempdir=$(mktemp -d)
+    - git clone https://gitlab.com/pv223975/its233.git $tempdir
+    - cd $tempdir
+    - pip3 install -r requirements.txt
+  script:
+    - python3 -m pytest
+  after_script:
+    -- rm -rf $tempdir
