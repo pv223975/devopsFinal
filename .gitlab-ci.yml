@@ -13,4 +13,4 @@ deploy:
   script:
     # code has to be within ssh quotes to run on production server
     # otherwise it only runs on the runner
-    - ssh -i SSH_KEY_FILE -o StrictHostKeyChecking=no app@10.8.156.76 @remote_script
+    - ssh -i SSH_KEY_FILE -o StrictHostKeyChecking=no app@10.8.156.76 "@remote_script"
