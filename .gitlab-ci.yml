@@ -4,10 +4,10 @@ stages:
 deploy:
   stage: "deploy"
   before_script:
-    # runners needs ssh installed to use ssh....................whowouldvethought........
     - apt-get update
+    # runners needs ssh installed to use ssh....................whowouldvethought........
     - apt-get install openssh-client -y
-    # decode encoded ssh because 
+    # decode ssh_key because gitlab no like whitespace
     - echo -n $ssh_key | base64 -d > SSH_KEY_FILE
     - chmod 400 SSH_KEY_FILE
   script:
