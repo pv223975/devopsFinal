@@ -13,5 +13,5 @@ deploy:
     # git cloned using ssh to prevent authorization
   script:
     # code has to be within ssh quotes to run on production server, otherwise runs on runner
-    # feeding ssh varible $remote_script to run commands
+    # $remote_script varible is ssh commands
     - ssh -i SSH_KEY_FILE -o StrictHostKeyChecking=no app@10.8.156.76 'bash -s' < $remote_script
