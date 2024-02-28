@@ -4,11 +4,13 @@ stages:
 deploy:
   stage: "deploy"
   before_script:
+    # runners needs ssh installed to use ssh....................whowouldvethought........
     - apt-get update
     - apt-get install openssh-client -y
+    # decode encoded ssh because 
     - echo -n $ssh_key | base64 -d > SSH_KEY_FILE
     - chmod 400 SSH_KEY_FILE
   script:
-    # code has to be in ssh quotes to run on production server
-    # 
-    - ssh -i SSH_KEY_FILE -o StrictHostKeyChecking=no app@10.8.156.76 "wall 'putting doodoo on wall'"
+    # code has to be within ssh quotes to run on production server
+    # otherwise it only runs on the runner
+    - ssh -i SSH_KEY_FILE -o StrictHostKeyChecking=no app@10.8.156.76 @remote_script
