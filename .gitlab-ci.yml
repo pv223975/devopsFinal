@@ -10,7 +10,8 @@ deploy:
     # decode ssh_key because gitlab no like whitespace
     - echo -n $ssh_key | base64 -d > SSH_KEY_FILE
     - chmod 400 SSH_KEY_FILE
+    # git cloned using ssh to prevent authorization
   script:
-    # code has to be within ssh quotes to run on production server
-    # otherwise it runs on the runner
+    # code has to be within ssh quotes to run on production server, otherwise runs on runner
+    # feeding ssh varible $remote_script to run commands
     - ssh -i SSH_KEY_FILE -o StrictHostKeyChecking=no app@10.8.156.76 'bash -s' < $remote_script
