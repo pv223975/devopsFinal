@@ -4,6 +4,7 @@ stages:
 deploy:
   stage: "deploy"
   before_script:
+    - apt-get install ssh
     - echo -n $ssh_key | base64 -d > SSH_KEY_FILE
     - chmod 400 SSH_KEY_FILE
   script:
