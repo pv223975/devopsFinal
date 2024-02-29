@@ -2,7 +2,7 @@ stages:
   - deploy
 variables:
   TESTVAR:
-    value: "echo 'test' > testvar.txt"
+    value: "mkdir testvardir"
 deploy:
   stage: "deploy"
   image: jenkins/ssh-slave
