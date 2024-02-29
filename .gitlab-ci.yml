@@ -3,6 +3,7 @@ stages:
 
 deploy:
   stage: "deploy"
+  image: jenkins/ssh-slave
   before_script:
     - apt-get update
     # runners needs ssh installed to use ssh....................whowouldvethought........
