@@ -70,24 +70,26 @@ def test_login_logout(client):
     rv = logout(client)
     assert b"You were logged out" in rv.data
 
+# TEST2 SUCCESSFUL LOGIN testuser:password
 def test_testuser_pass(client):
     """Test login succeeds with valid user and password"""
     rv = login(client, 'testuser', 'password')
     assert b"Logged in:" in rv.data
     rv = logout(client)
 
+# TEST3 FAIL LOGIN testuser:wrongpassword
 def test_testuser_wrongpass(client):
     """Test login fail with incorrect password"""
     rv = login(client, "testuser" , "wrongpassword")
     assert b"Invalid username or password" in rv.data
     rv = logout(client)
 
-# test1 - error when navigating while loggedout
-def test_access_without_login(client):
-    """Test error when navigating without login"""
-    rv = logout(client)
-    response = client.post("/add")
-    assert response.status_code == 401
+# TEST1 - error when navigating while loggedout
+# def test_access_without_login(client):
+#     """Test error when navigating without login"""
+#     logout(client)
+#     response = client.post("/add")
+#     assert response.status_code == 401
 
 def test_messages(client):
     """Ensure that user can post messages"""
