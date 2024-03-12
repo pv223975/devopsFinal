@@ -5,7 +5,10 @@ variables:
   TESTVAR:
     value: "mkdir testvardir"
 test:
-  - python3 -m pytest --verbose
+  stage: "test"
+  image: jenkins/ssh-slave
+  script:
+    - python3 -m pytest --verbose
 
 deploy:
   stage: "deploy"
