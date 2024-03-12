@@ -8,6 +8,7 @@ test:
   stage: "test"
   image: jenkins/ssh-slave
   script:
+    - apt install python3
     - python3 -m pytest --verbose
 
 deploy:
