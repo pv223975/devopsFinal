@@ -224,6 +224,7 @@ def add_comment():
 #     except Exception as e:
 #         result = {"status": 0, "message": repr(e)}
 #     return jsonify(result)
+
 @app.route("/viewimages", methods=["POST", "GET"])
 def viewimages(): 
     files = os.listdir(os.path.join(app.static_folder, "images"))
@@ -240,7 +241,6 @@ def upload_file():
         photos.save(request.files["photo"])
         flash("Photo saved successfully.")
         return redirect(url_for("viewimages"))
-
 
 
 @app.route("/search/", methods=["GET"])
