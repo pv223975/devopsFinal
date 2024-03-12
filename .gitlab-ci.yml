@@ -6,18 +6,16 @@ variables:
     value: "mkdir testvardir"
 test:
   stage: "test"
-  image: jenkins/ssh-slave
+  image: jenkins
   script:
-    - apt install python3
+    - apt-get install python3
     - python3 -m pytest --verbose
 
 deploy:
   stage: "deploy"
   image: jenkins/ssh-slave
   before_script:
-    #- apt-get update
     # runners needs ssh installed to use ssh....................whowouldvethought........
-    #- apt-get install openssh-client -y
     # decode ssh_key because gitlab no like whitespace
     - echo -n $ssh_key | base64 -d > SSH_KEY_FILE
     - chmod 400 SSH_KEY_FILE
@@ -25,6 +23,6 @@ deploy:
   script:
     # code has to be within ssh quotes to run on production server, otherwise runs on runner
     # ssh commands put in $remote_script varible
-    - ssh -i SSH_KEY_FILE -o StrictHostKeyChecking=no app@10.8.156.76 'bash -s' < $remote_script
+    - ssh -i SSH_KEY_FILE -o StrictHostKeyChecking=no app@10.8.156.76 'bash -s' "cd ./connectnow && killall python3; git pull; python3 -m flask --app project/app.py run --host=0.0.0.0 >> log.txt 2>> error.txt &"
     #variable test no work yet
     #- $TESTVAR
