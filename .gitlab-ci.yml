@@ -10,7 +10,7 @@ test:
   stage: "test"
   image: python:3.8
   script:
-    - pip install pytest
+    - pip install requirements.txt
     - python -m pytest --verbose
 
 deploy:
