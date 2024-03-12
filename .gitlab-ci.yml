@@ -1,13 +1,17 @@
 stages:
+  - test
   - deploy
 variables:
   TESTVAR:
     value: "mkdir testvardir"
+test:
+  - python3 -m pytest --verbose
+
 deploy:
   stage: "deploy"
   image: jenkins/ssh-slave
   before_script:
-    - apt-get update
+    #- apt-get update
     # runners needs ssh installed to use ssh....................whowouldvethought........
     #- apt-get install openssh-client -y
     # decode ssh_key because gitlab no like whitespace
